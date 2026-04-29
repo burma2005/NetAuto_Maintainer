@@ -95,9 +95,19 @@ graph TD
 
     K ==>|"交付最終<br>報告與備份"| A
 
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style L fill:#ff9,stroke:#f66,stroke-width:2px,stroke-dasharray: 5 5
-    style K fill:#bbf,stroke:#333,stroke-width:2px
+    style A fill:#f9f,stroke:#333,stroke-width:2px,color:#333
+    style L fill:#ff9,stroke:#f66,stroke-width:2px,stroke-dasharray: 5 5,color:#333
+    style K fill:#bbf,stroke:#333,stroke-width:2px,color:#333
+    style B fill:#fff0d0,stroke:#aaa,stroke-width:1px,color:#333
+    style C fill:#fff,stroke:#aaa,stroke-width:1px,color:#333
+    style D fill:#fff,stroke:#aaa,stroke-width:1px,color:#333
+    style E fill:#fff,stroke:#aaa,stroke-width:1px,color:#333
+    style F fill:#bfb,stroke:#333,stroke-width:2px,color:#333
+    style G fill:#fee,stroke:#aaa,stroke-width:1px,color:#333
+    style H fill:#fff,stroke:#aaa,stroke-width:1px,color:#333
+    style I fill:#fff,stroke:#aaa,stroke-width:1px,color:#333
+    style J fill:#fff,stroke:#aaa,stroke-width:1px,color:#333
+    style M fill:#fff,stroke:#aaa,stroke-width:1px,color:#333
 ```
 
 ## ⚠️ 安全須知
