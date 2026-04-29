@@ -1,0 +1,50 @@
+device_type: "fortinet"
+display_name: "Fortinet FortiGate (FortiOS)"
+vendor_keywords: ["fortinet", "fortigate"]
+os_keywords: ["fortios"]
+exclude_keywords: []
+
+enable_mode: false
+
+version_command: "get system status"
+inventory_command: "get system status"
+
+model_patterns:
+  - 'Platform Full Name\s*:\s*(.+)'
+
+version_patterns:
+  - 'Version:\s*FortiGate-\S+\s+v(\S+),'
+  - 'Version:\s*\S+\s+v(\S+),'
+
+commands:
+  # 系統識別與版本
+  - "get system status"
+  # 完整設定備份 (DR 來源)
+  - "show full-configuration"
+  # 系統效能
+  - "get system performance status"
+  # 介面與路由
+  - "get system interface physical"
+  - "get system interface"              # (建議新增) 查看介面 IP 與邏輯狀態
+  - "get router info routing-table all"
+  # ARP 表
+  - "get system arp"
+  # 防火牆政策
+  - "show firewall policy"              # (已修正) get 改為 show
+  # VPN 狀態
+  - "get vpn ipsec tunnel summary"
+  # HA 高可用狀態
+  - "get system ha status"
+  # 系統日誌 (記憶體中的最近事件)
+  - "execute log filter device memory"  # (建議新增) 確保讀取來源
+  - "execute log filter category event" # (建議新增) 避免日誌量過大
+  - "execute log display"
+
+conditional_commands: []
+
+# --- 解析與註解設定 ---
+topology_command: "" # 暫時不支援標準 CDP/LLDP topology
+command_annotations:
+  "show full-configuration": "⭐ 完整設定備份 (DR 來源)"
+  "execute log display": "⚠️ 系統日誌 (記憶體)"
+

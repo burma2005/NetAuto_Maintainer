@@ -1,0 +1,56 @@
+device_type: "cisco_ios"
+display_name: "Cisco IOS / IOS XE"
+vendor_keywords: ["cisco"]
+os_keywords: []
+exclude_keywords: ["nexus", "nx-os", "wlc", "aireos"]
+
+
+enable_mode: true
+
+version_command: "show version"
+inventory_command: "show inventory"
+
+model_patterns:
+  - 'Model [Nn]umber\s*:\s*(\S+)'
+  - 'PID:\s*(\S+)'
+
+version_patterns:
+  - 'Version\s+(\S+),'
+
+commands:
+  - "show version"
+  - "show inventory"
+  - "show running-config"
+  - "show environment all"
+  - "show environment temperature"
+  - "show environment power"
+  - "show power inline"
+  - "show processes cpu history"
+  - "show memory platform"
+  - "show startup-config"
+  - "show interfaces status"
+  - "show interfaces trunk"
+  - "show ip interface brief"
+  - "show etherchannel summary"
+  - "show ip route"
+  - "show ip arp"
+  - "show mac address-table"
+  - "show cdp neighbors detail"
+  - "show lldp neighbors detail"
+  - "show logging"
+  - "show vlan brief"
+  - "show spanning-tree summary"
+
+conditional_commands:
+  - condition: "C9606R"
+    commands:
+      - "show module"
+      - "show redundancy"
+
+# --- 解析與註解設定 ---
+topology_command: "show cdp neighbors detail"
+command_annotations:
+  "show running-config": "⭐ 運行組態 (DR 來源)"
+  "show logging": "⚠️ 系統日誌"
+  "show mac address-table": "MAC 位址表 (追蹤設備接入位置)"
+  "show environment all": "環境硬體監控"

@@ -1,0 +1,48 @@
+device_type: "cisco_wlc"
+display_name: "Cisco WLC AireOS"
+vendor_keywords: ["wlc"]
+os_keywords: ["aireos"]
+exclude_keywords: []
+
+
+enable_mode: false
+
+version_command: "show sysinfo"
+inventory_command: "show inventory"
+
+model_patterns:
+  - 'PID:\s*(\S+)'
+
+version_patterns:
+  - 'Product Version\.+\s+(\S+)'
+
+commands:
+  - "show sysinfo"
+  - "show inventory"
+  - "show run-config commands"
+  - "show run-config"
+  - "show run-config no-ap"
+  - "show wlan summary"
+  - "show ap summary"
+  - "show ap join stats summary all"
+  - "show client summary"
+  - "show interface summary"
+  - "show port summary"
+  - "show cdp neighbors detail"
+  - "show traplog"
+  - "show msglog"
+  - "show 802.11a summary"
+  - "show 802.11b summary"
+  - "show advanced 802.11a summary"
+  - "show radius summary"
+  - "show acl summary"
+  - "show redundancy summary"
+
+conditional_commands: []
+
+# --- 解析與註解設定 ---
+topology_command: "show cdp neighbors detail"
+command_annotations:
+  "show run-config commands": "⭐ 運行組態 (DR 來源)"
+  "show msglog": "⚠️ 系統日誌"
+

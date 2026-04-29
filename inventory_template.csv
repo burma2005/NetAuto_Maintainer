@@ -1,0 +1,12 @@
+IP,Username,Password,Secret,Hostname,Vendor,OS_Version,DeviceType
+# ⚠️ 注意：Vendor, OS_Version, DeviceType 欄位為可選 (Optional)
+# 若留空，腳本將透過 Netmiko SSHDetect 即時自動辨識設備廠牌
+192.168.1.1,admin,Sw1tch@dmin,,Core-SW,,,
+192.168.11.253,admin,P@ssw0rd,,1F-A-OA,,,
+192.168.13.253,admin,P@ssw0rd,,1F-A-Phone,Cisco,,
+192.168.21.253,admin,P@ssw0rd,,2F-OA,,,cisco_ios
+192.168.23.253,admin,P@ssw0rd,,2F-Phone,,,
+192.168.1.243,admin,Nex@s123,,DC-Nexus-1,,,
+192.168.1.244,admin,Nex@s123,,DC-Nexus-2,Cisco Nexus,NX-OS,
+192.168.7.252,admin,Wlc@dmin,,WLC-Primary,,,
+192.168.70.1,admin,F0rti!,,FW-HQ,,,fortinet

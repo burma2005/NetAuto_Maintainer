@@ -1,0 +1,72 @@
+# =============================================================================
+# 自訂設備 Profile 範本 (Custom Device Profile Template)
+# =============================================================================
+# 使用方式：
+#   1. 將本檔案複製為 <your_device>.yml
+#   2. 填入對應的 Netmiko device_type 與指令集
+#   3. 存放在 command_profiles/ 目錄中，腳本會自動掃描載入
+#
+# Netmiko 支援的 device_type 完整清單：
+#   https://github.com/ktbyers/netmiko/blob/develop/PLATFORMS.md
+# =============================================================================
+
+# --- 必填 ---
+device_type: "your_netmiko_device_type"    # 例如: "cisco_ios", "arista_eos", "juniper_junos"
+display_name: "Your Device Platform Name"  # 人類可讀的平台名稱
+
+# --- 自動辨識 (用於從 CSV 的 Vendor/OS_Version 欄位匹配) ---
+vendor_keywords: ["your_vendor"]           # CSV Vendor 欄位包含此關鍵字時匹配 (小寫比對)
+os_keywords: []                            # CSV OS_Version 欄位包含此關鍵字時匹配
+exclude_keywords: []                       # 當包含此關鍵字時排除 (避免誤判)
+
+# --- 連線行為 ---
+enable_mode: true                          # 是否需要進入特權模式 (Cisco=true, Juniper/Fortinet=false)
+
+# --- 身分辨識用指令 ---
+version_command: "show version"            # 取得 OS 版本資訊的指令
+inventory_command: "show inventory"        # 取得硬體型號/序號的指令
+
+# --- 型號與版本解析 (正則表達式，按優先順序嘗試) ---
+model_patterns:
+  - 'Model\s*[Nn]umber\s*:\s*(\S+)'       # 從 version/inventory 輸出中提取型號
+  - 'PID:\s*(\S+)'
+
+version_patterns:
+  - 'Version\s+(\S+)'                     # 從 version 輸出中提取 OS 版本號
+
+# --- 主要採集指令清單 ---
+commands:
+  # 系統與版本
+  - "show version"
+  - "show inventory"
+  # 設定備份 (DR 來源)
+  - "show running-config"
+  # 環境健康
+  - "show environment all"
+  # 介面狀態
+  - "show interfaces status"
+  - "show ip interface brief"
+  # 路由與 ARP
+  - "show ip route"
+  - "show ip arp"
+  # MAC 位址表 (追蹤設備接入位置)
+  - "show mac address-table"
+  # 鄰接設備探索 (用於繪製拓樸圖)
+  - "show cdp neighbors detail"
+  - "show lldp neighbors detail"
+  # 系統日誌
+  - "show logging"
+
+# --- 條件性指令 (可選，依偵測到的型號觸發) ---
+conditional_commands: []
+  # 範例:
+  # - condition: "C9606R"        # 當偵測到的型號包含此字串時
+  #   commands:                  # 額外執行以下指令
+  #     - "show module"
+  #     - "show redundancy"
+
+# --- 解析與註解設定 ---
+topology_command: "show cdp neighbors detail"  # 用於繪製拓樸圖的指令輸出 (若該廠牌不支援則留空)
+command_annotations:                           # 中文註解對照表 (產生 annotated_configs 時使用)
+  "show running-config": "⭐ 運行組態 (DR 來源)"
+  "show version": "系統版本與啟動時間"

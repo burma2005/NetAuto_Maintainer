@@ -1,0 +1,58 @@
+device_type: "cisco_nxos"
+display_name: "Cisco NX-OS (Nexus)"
+vendor_keywords: ["nexus"]
+os_keywords: ["nx-os", "nxos"]
+exclude_keywords: []
+
+
+enable_mode: true
+
+version_command: "show version"
+inventory_command: "show inventory"
+
+model_patterns:
+  - 'Hardware:\s*(.+?)(?:\r?\n)'
+  - 'PID:\s*(\S+)'
+
+version_patterns:
+  - 'system:\s+version\s+(\S+)'
+  - 'NXOS:\s+version\s+(\S+)'
+
+commands:
+  - "show version"
+  - "show inventory"
+  - "show module"
+  - "show running-config"
+  - "show environment"
+  - "show environment all"
+  - "show environment temperature"
+  - "show environment fan"
+  - "show environment power"
+  - "show processes cpu history"
+  - "show startup-config"
+  - "show interface status"
+  - "show interface brief"
+  - "show interface trunk"
+  - "show ip interface brief"
+  - "show port-channel summary"
+  - "show ip route"
+  - "show ip arp"
+  - "show mac address-table"
+  - "show vpc"
+  - "show vpc brief"
+  - "show vpc peer-keepalive"
+  - "show cdp neighbors detail"
+  - "show lldp neighbors detail"
+  - "show logging logfile"
+  - "show vlan brief"
+  - "show spanning-tree summary"
+
+conditional_commands: []
+
+# --- 解析與註解設定 ---
+topology_command: "show cdp neighbors detail"
+command_annotations:
+  "show running-config": "⭐ 運行組態 (DR 來源)"
+  "show logging logfile": "⚠️ 系統日誌"
+  "show mac address-table": "MAC 位址表 (追蹤設備接入位置)"
+
