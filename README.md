@@ -66,33 +66,34 @@ NetAuto_Maintainer/
 ## 🏛️ 專案流程架構
 
 ```mermaid
+%%{init: {'themeVariables': { 'fontSize': '24px'}}}%%
 graph TD
-    A[User / 網路工程師] -->|僅需提供 IP & 帳密| B(inventory.csv)
+    A["User /<br>網路工程師"] -->|"僅需提供<br>IP 及 帳密"| B("inventory.csv")
     
-    subgraph 階段一：線上自動化採集
-        B --> C{collect_show_commands.py}
-        C -->|1. CSV 靜態配對| D[讀取 YAML Profiles]
-        C -->|2. 未知設備: Netmiko SSHDetect 即時嗅探| D
-        D -->|餵入對應的指令集| E[網路設備 (Cisco, Fortinet...)]
-        E -->|回傳 Raw Output| F[output/raw_backups/]
-        C -.->|連線異常紀錄| G[output/failed_devices.csv]
+    subgraph stage1 ["階段一：線上自動化採集"]
+        B --> C{"collect_show_commands.py"}
+        C -->|"1. CSV 靜態配對"| D["讀取 YAML Profiles"]
+        C -->|"2. 未知設備:<br>Netmiko 即時嗅探"| D
+        D -->|"餵入對應的<br>指令集"| E["網路設備<br>Cisco, Fortinet..."]
+        E -->|"回傳 Raw Output"| F["output/raw_backups/"]
+        C -.->|"連線異常紀錄"| G["output/failed_devices.csv"]
     end
 
-    subgraph 階段二：離線資料淨化與解析
-        F --> H{process_offline_data.py}
-        D -.->|讀取中文註解與拓樸指令規則| H
-        H -->|純化設定檔 (DR用)| I[output/dr_configs/]
-        H -->|動態嵌入中文註解| J[output/annotated_configs/]
-        H -->|解析 Topology & 萃取 OS 版本| K[output/maintenance_report.md]
+    subgraph stage2 ["階段二：離線資料淨化與解析"]
+        F --> H{"process_offline_data.py"}
+        D -.->|"讀取中文註解<br>與拓樸指令"| H
+        H -->|"純化設定檔<br>DR用"| I["output/dr_configs/"]
+        H -->|"動態嵌入<br>中文註解"| J["output/annotated_configs/"]
+        H -->|"解析 Topology<br>及 OS 版本"| K["output/maintenance_report.md"]
     end
 
-    subgraph 階段三：AI 即時安全分析
-        K -.->|1. 讀取待測 OS 版本清單| L((AI Agent))
-        L <-->|2. 網頁搜尋與比對| M[(外部 CVE/NVD 漏洞資料庫)]
-        L -->|3. Append 漏洞評估結果| K
+    subgraph stage3 ["階段三：AI 即時安全分析"]
+        K -.->|"1. 讀取待測<br>OS 版本清單"| L(("AI Agent"))
+        L <-->|"2. 網頁搜尋<br>與比對"| M[("外部 CVE/NVD<br>資料庫")]
+        L -->|"3. Append<br>漏洞評估結果"| K
     end
 
-    K ==>|交付最終報告與備份| A
+    K ==>|"交付最終<br>報告與備份"| A
 
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style L fill:#ff9,stroke:#f66,stroke-width:2px,stroke-dasharray: 5 5
@@ -110,8 +111,3 @@ graph TD
 本專案致力於降低環境建立門檻，核心技術棧如下：
 * **[Netmiko](https://github.com/ktbyers/netmiko)**: 業界標準的跨廠牌 SSH 連線套件。本專案深度整合其 `SSHDetect` 模組，達成全自動的設備廠牌辨識 (Auto-discovery)。
 * **[PyYAML](https://pyyaml.org/)**: 用於解析 `command_profiles/`，徹底將 CLI 指令、中文註解邏輯與 Python 腳本解耦。
-
-## 🔗 相關專案與設計哲學對比
-
-* **[NAPALM](https://github.com/napalm-automation/napalm)**: NAPALM 是一個強大的跨廠牌自動化抽象層，會將各種指令輸出統一轉為標準 JSON。但本專案的設計哲學是 **「保留原汁原味的 CLI 黑底白字輸出 (Raw Text)」**，因為這對多數網路工程師在進行深度除錯 (Debug) 時是最具安全感與參考價值的。
-因此，我們捨棄 NAPALM，選擇自行打造 **YAML Profile + Netmiko SSHDetect** 的輕量化架構。這正是本專案能夠兼顧「自動化擴充」與「尊重工程師傳統操作習慣」的核心原因。
