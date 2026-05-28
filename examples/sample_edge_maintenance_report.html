@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中華精測 ACME 2026 Q1 EDGE 網路設備維護報告</title>
+<style>
+/* ── 基礎與字型 ─────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+  font-size: 10pt;
+  color: #1a1a2e;
+  background: #f0f2f5;
+  line-height: 1.55;
+}
+
+/* ── A4 頁面容器 ─────────────────────────────────── */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 8mm auto;
+  background: #ffffff;
+  padding: 15mm 18mm 15mm 18mm;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  position: relative;
+  page-break-after: always;
+}
+.page:last-child { page-break-after: avoid; }
+
+/* ── 封面頁 ─────────────────────────────────────── */
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 267mm;
+}
+.cover-logo-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #1a3a6b;
+}
+.cover-logo-icon {
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, #1a3a6b 0%, #2563ae 100%);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; color: #fff;
+  flex-shrink: 0;
+}
+.cover-logo-text { line-height: 1.2; }
+.cover-logo-text .company { font-size: 13pt; font-weight: 700; color: #1a3a6b; }
+.cover-logo-text .dept { font-size: 9pt; color: #5a6a8a; }
+
+.cover-hero {
+  text-align: center;
+  padding: 20mm 0 16mm;
+}
+.cover-badge {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a3a6b;
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+.cover-title {
+  font-size: 28pt;
+  font-weight: 900;
+  color: #1a3a6b;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.cover-subtitle {
+  font-size: 13pt;
+  color: #2563ae;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+.cover-divider {
+  width: 60px; height: 4px;
+  background: linear-gradient(90deg, #2563ae, #38b6f5);
+  margin: 0 auto 24px;
+  border-radius: 2px;
+}
+.cover-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+.stat-card {
+  background: linear-gradient(135deg, #1a3a6b 0%, #2563ae 100%);
+  border-radius: 10px;
+  padding: 14px 10px;
+  text-align: center;
+  color: #fff;
+}
+.stat-card .num { font-size: 24pt; font-weight: 900; line-height: 1; }
+.stat-card .label { font-size: 7.5pt; opacity: 0.85; margin-top: 4px; line-height: 1.3; }
+
+.cover-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+.info-block {
+  background: #f6f8fc;
+  border-left: 4px solid #2563ae;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+}
+.info-block .info-label { font-size: 7.5pt; color: #5a6a8a; text-transform: uppercase; letter-spacing: 1px; }
+.info-block .info-value { font-size: 10pt; font-weight: 700; color: #1a3a6b; margin-top: 2px; }
+
+.cover-alert {
+  background: #fff3cd;
+  border: 1.5px solid #ffc107;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 14px;
+  font-size: 8.5pt;
+  color: #7a5a00;
+}
+.cover-alert strong { color: #c85000; }
+
+.cover-footer {
+  border-top: 1.5px solid #d8e2f0;
+  padding-top: 10px;
+  font-size: 7.5pt;
+  color: #8a9ab5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cover-footer .confidential {
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 7pt;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+/* ── 頁首頁尾（非封面） ─────────────────────────── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #1a3a6b;
+  padding-bottom: 7px;
+  margin-bottom: 14px;
+}
+.page-header .ph-title { font-size: 8pt; color: #5a6a8a; }
+.page-header .ph-logo { font-size: 9pt; font-weight: 700; color: #1a3a6b; }
+.page-header .ph-badge {
+  background: #e8f0fe;
+  color: #1a3a6b;
+  font-size: 7pt;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.page-footer {
+  position: absolute;
+  bottom: 10mm;
+  left: 18mm; right: 18mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7pt;
+  color: #9aaccc;
+  border-top: 1px solid #e0e8f4;
+  padding-top: 5px;
+}
+
+/* ── 章節標題 ────────────────────────────────────── */
+.section-title {
+  font-size: 13pt;
+  font-weight: 800;
+  color: #1a3a6b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 7px;
+  border-bottom: 2px solid #e0e8f4;
+}
+.section-title .sec-num {
+  background: linear-gradient(135deg, #1a3a6b, #2563ae);
+  color: #fff;
+  font-size: 9pt;
+  font-weight: 900;
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.section-title .sec-icon { font-size: 14pt; }
+.subsection { font-size: 10.5pt; font-weight: 700; color: #2563ae; margin: 12px 0 7px; }
+
+/* ── 通用表格 ────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  margin-bottom: 10px;
+}
+thead tr { background: linear-gradient(135deg, #1a3a6b 0%, #2563ae 100%); }
+thead th {
+  color: #fff;
+  font-weight: 700;
+  padding: 7px 8px;
+  text-align: left;
+  font-size: 8pt;
+  white-space: nowrap;
+}
+thead th:first-child { border-radius: 6px 0 0 0; }
+thead th:last-child  { border-radius: 0 6px 0 0; }
+tbody tr { border-bottom: 1px solid #e8eef8; }
+tbody tr:nth-child(even) { background: #f6f8fc; }
+tbody tr:hover { background: #eef3ff; }
+td {
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+td code, .mono {
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 7.5pt;
+  background: #eef1f8;
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #2a4080;
+}
+
+/* ── 狀態徽章 ────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 7.5pt;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.badge-ok     { background: #d1fae5; color: #065f46; }
+.badge-warn   { background: #fef3c7; color: #92400e; }
+.badge-danger { background: #fee2e2; color: #991b1b; }
+.badge-info   { background: #dbeafe; color: #1e40af; }
+.badge-new    { background: #ede9fe; color: #5b21b6; }
+.badge-static { background: #ffedd5; color: #9a3412; }
+
+/* ── 摘要卡片 ─────────────────────────────────────── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.summary-card {
+  border-radius: 8px;
+  padding: 11px 14px;
+  border-left: 5px solid;
+}
+.card-green  { background: #f0fdf4; border-color: #16a34a; }
+.card-yellow { background: #fffbeb; border-color: #d97706; }
+.card-red    { background: #fef2f2; border-color: #dc2626; }
+.card-purple { background: #faf5ff; border-color: #7c3aed; }
+.card-title {
+  font-size: 8.5pt;
+  font-weight: 800;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.card-green  .card-title { color: #14532d; }
+.card-yellow .card-title { color: #78350f; }
+.card-red    .card-title { color: #7f1d1d; }
+.card-purple .card-title { color: #4c1d95; }
+.card-item {
+  font-size: 8pt;
+  padding: 3px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.08);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.card-item:last-child { border-bottom: none; }
+.card-item .item-label { color: #374151; }
+.card-item .item-val   { font-weight: 700; }
+
+/* ── 拓撲圖 ──────────────────────────────────────── */
+.topo-container {
+  background: #f6f8fc;
+  border: 1.5px solid #d0ddf0;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.topo-core {
+  text-align: center;
+  margin-bottom: 14px;
+}
+.topo-node {
+  display: inline-block;
+  background: linear-gradient(135deg, #1a3a6b, #2563ae);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 8.5pt;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.4;
+  box-shadow: 0 3px 10px rgba(37,99,174,0.3);
+}
+.topo-node.wlc {
+  background: linear-gradient(135deg, #0f766e, #0d9488);
+  box-shadow: 0 3px 10px rgba(13,148,136,0.3);
+}
+.topo-node.eol {
+  background: linear-gradient(135deg, #b45309, #d97706);
+  box-shadow: 0 3px 10px rgba(217,119,6,0.3);
+}
+.topo-node.new-sw {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  box-shadow: 0 3px 10px rgba(124,58,237,0.3);
+}
+.topo-connectors {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.topo-edge-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.topo-line {
+  width: 2px; height: 16px;
+  background: #90a8c8;
+}
+.topo-edge {
+  background: #dbeafe;
+  border: 1.5px solid #93c5fd;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 7pt;
+  font-weight: 600;
+  color: #1e40af;
+  text-align: center;
+  white-space: nowrap;
+  min-width: 70px;
+}
+.topo-edge.eol-edge {
+  background: #fef3c7;
+  border-color: #fbbf24;
+  color: #92400e;
+}
+.topo-edge.new-edge {
+  background: #ede9fe;
+  border-color: #a78bfa;
+  color: #5b21b6;
+}
+.topo-legend {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 7pt;
+}
+.topo-legend-item { display: flex; align-items: center; gap: 4px; color: #4a5568; }
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+}
+
+/* ── 告警區塊 ─────────────────────────────────────── */
+.alert-block {
+  border-radius: 8px;
+  padding: 9px 12px;
+  margin-bottom: 7px;
+  font-size: 8.5pt;
+  display: flex;
+  gap: 10px;
+}
+.alert-icon { font-size: 14pt; flex-shrink: 0; line-height: 1; }
+.alert-warn  { background: #fffbeb; border: 1.5px solid #fbbf24; }
+.alert-ok    { background: #f0fdf4; border: 1.5px solid #86efac; }
+.alert-info  { background: #eff6ff; border: 1.5px solid #93c5fd; }
+.alert-danger{ background: #fef2f2; border: 1.5px solid #fca5a5; }
+.alert-body  { flex: 1; }
+.alert-body strong { font-size: 9pt; display: block; margin-bottom: 3px; }
+.alert-body .alert-cmd {
+  font-family: "Consolas", monospace;
+  font-size: 7.5pt;
+  background: rgba(0,0,0,0.06);
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: inline-block;
+  margin: 2px 0;
+}
+.alert-body .suggestion {
+  margin-top: 4px;
+  font-size: 7.5pt;
+  color: #374151;
+  font-style: italic;
+}
+
+/* ── CVE 行顏色 ──────────────────────────────────── */
+tr.row-eol    { background: #fff7ed !important; }
+tr.row-warn   { background: #fffbeb !important; }
+tr.row-new-sw { background: #f5f3ff !important; }
+tr.row-eol td:first-child { border-left: 3px solid #f97316; }
+tr.row-warn td:first-child { border-left: 3px solid #eab308; }
+tr.row-new-sw td:first-child { border-left: 3px solid #8b5cf6; }
+
+/* ── AP 表格特殊標示 ─────────────────────────────── */
+tr.row-core-trace { background: #faf5ff !important; }
+tr.row-core-trace td:first-child { border-left: 3px solid #7c3aed; }
+tr.row-static-ps  { background: #fff7ed !important; }
+tr.row-static-ps  td:first-child { border-left: 3px solid #ea580c; }
+
+/* ── 備份路徑卡片 ─────────────────────────────────── */
+.path-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.path-card {
+  background: #f6f8fc;
+  border: 1.5px solid #d0ddf0;
+  border-radius: 8px;
+  padding: 9px 11px;
+}
+.path-card .path-icon { font-size: 16pt; margin-bottom: 4px; }
+.path-card .path-name { font-size: 8.5pt; font-weight: 700; color: #1a3a6b; }
+.path-card .path-desc { font-size: 7.5pt; color: #5a6a8a; margin-top: 2px; }
+.path-card code       { font-size: 7pt; }
+
+/* ── 建議清單 ─────────────────────────────────────── */
+.rec-list { list-style: none; }
+.rec-item {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed #e0e8f4;
+  font-size: 8.5pt;
+}
+.rec-item:last-child { border-bottom: none; }
+.rec-num {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, #1a3a6b, #2563ae);
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8pt;
+  font-weight: 700;
+}
+.rec-body { flex: 1; }
+.rec-body strong { color: #1a3a6b; }
+.rec-priority {
+  font-size: 6.5pt;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 8px;
+  align-self: flex-start;
+  white-space: nowrap;
+}
+.pri-high   { background: #fee2e2; color: #991b1b; }
+.pri-medium { background: #fef3c7; color: #92400e; }
+.pri-low    { background: #d1fae5; color: #065f46; }
+
+/* ── 列印 / PDF ──────────────────────────────────── */
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: #fff; font-size: 9.5pt; }
+  .page {
+    width: 100%;
+    margin: 0;
+    padding: 14mm 16mm 14mm 16mm;
+    box-shadow: none;
+    min-height: 0;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: avoid; }
+  table { font-size: 7.5pt; }
+  thead th { font-size: 7pt; }
+}
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     封 面 頁
+════════════════════════════════════════════ -->
+<div class="page">
+<div class="cover">
+
+  <!-- LOGO 列 -->
+  <div class="cover-logo-bar">
+    <div class="cover-logo-icon">🌐</div>
+    <div class="cover-logo-text">
+      <div class="company">範例企業股份有限公司</div>
+      <div class="dept">網路基礎設施管理部 · Network Infrastructure</div>
+    </div>
+  </div>
+
+  <!-- 主標題區 -->
+  <div class="cover-hero">
+    <div class="cover-badge">Confidential &nbsp;·&nbsp; Internal Use Only</div>
+    <div class="cover-title">ACME 2026 Q1<br>EDGE 維護報告</div>
+    <div class="cover-subtitle">網路設備定期巡檢 · MAC Table AP 接入位置反查</div>
+    <div class="cover-divider"></div>
+
+    <!-- 統計數字 -->
+    <div class="cover-stats">
+      <div class="stat-card">
+        <div class="num">27</div>
+        <div class="label">受管設備總數<br>(含新發現 2F-B-OA)</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">43<span style="font-size:14pt">/43</span></div>
+        <div class="label">AP 接入位置<br>全數定位 ✓</div>
+      </div>
+      <div class="stat-card" style="background:linear-gradient(135deg,#92400e,#d97706)">
+        <div class="num">2</div>
+        <div class="label">異常 Syslog<br>(新增告警)</div>
+      </div>
+      <div class="stat-card" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)">
+        <div class="num">3</div>
+        <div class="label">EoL 設備<br>需優先升版</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 資訊格 -->
+  <div class="cover-info-grid">
+    <div class="info-block">
+      <div class="info-label">本次分析時間</div>
+      <div class="info-value">2026 / 05 / 28 &nbsp; 11:34</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">上次維護時間</div>
+      <div class="info-value">2026 / 04 / 27 &nbsp; (Q2 EDGE)</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">維護範圍</div>
+      <div class="info-value">CoreSW × 1 &nbsp;·&nbsp; Edge SW × 25 &nbsp;·&nbsp; WLC × 1</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">新增功能</div>
+      <div class="info-value">show mac address-table · AP 接入 Port 自動反查</div>
+    </div>
+  </div>
+
+  <!-- 新發現警示 -->
+  <div class="cover-alert">
+    ⚠️ &nbsp;<strong>本次新發現：</strong>
+    設備 <strong>2F-B-OA (192.168.21.252)</strong> 原先未列入 Inventory，透過 CoreSW CDP 追蹤後發現；
+    OS 版本 IOS XE 16.9.7（EoL），含已知重大 CVE，已補入 inventory 並採集完整備份。
+  </div>
+
+  <!-- 頁腳 -->
+  <div class="cover-footer">
+    <span>© 2026 範例企業科技 &nbsp;·&nbsp; 自動化維護系統產生 &nbsp;·&nbsp; 網路工程部</span>
+    <span class="confidential">CONFIDENTIAL</span>
+  </div>
+</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     頁 2 — 備份說明 + 差異摘要
+════════════════════════════════════════════ -->
+<div class="page">
+<div class="page-header">
+  <span class="ph-logo">ACME 網路維護報告 2026 Q1 EDGE</span>
+  <span class="ph-badge">第 2 頁 · 差異摘要</span>
+</div>
+
+<!-- 備份路徑 -->
+<div class="section-title">
+  <span class="sec-num">📁</span>
+  <span>隨附設定檔與備份路徑說明</span>
+</div>
+<div class="path-grid">
+  <div class="path-card">
+    <div class="path-icon">🛡️</div>
+    <div class="path-name">災難還原設定檔</div>
+    <div class="path-desc">已剔除雜訊的純配置指令檔，可 100% 回貼空機復原</div>
+    <code>.\dr_configs\</code>
+  </div>
+  <div class="path-card">
+    <div class="path-icon">🔍</div>
+    <div class="path-name">原始狀態除錯備份</div>
+    <div class="path-desc">含全方位狀態原始輸出，專供工程師深度 Debug</div>
+    <code>.\raw_backups\</code>
+  </div>
+  <div class="path-card">
+    <div class="path-icon">📝</div>
+    <div class="path-name">帶註解完整備份</div>
+    <div class="path-desc">Raw 的中文註解版，便於交接與閱讀理解</div>
+    <code>.\annotated_configs\</code>
+  </div>
+</div>
+
+<!-- 差異摘要 -->
+<div class="section-title">
+  <span class="sec-num">1</span>
+  <span>與上季 (Q2) 關鍵差異摘要</span>
+</div>
+
+<div class="summary-grid">
+  <!-- 正面改善 -->
+  <div class="summary-card card-green">
+    <div class="card-title">✅ 正面改善</div>
+    <div class="card-item">
+      <span class="item-label">9F-A-OA Gi3/0/17 錯誤停用</span>
+      <span class="item-val"><span class="badge badge-ok">已恢復</span></span>
+    </div>
+    <div class="card-item">
+      <span class="item-label">AP 接入位置追蹤</span>
+      <span class="item-val"><span class="badge badge-ok">43/43 全定位</span></span>
+    </div>
+  </div>
+
+  <!-- 本次新發現 -->
+  <div class="summary-card card-purple">
+    <div class="card-title">🔍 本次新發現</div>
+    <div class="card-item">
+      <span class="item-label">2F-B-OA 漏列於 Inventory</span>
+      <span class="item-val"><span class="badge badge-new">CDP 追查發現</span></span>
+    </div>
+    <div class="card-item">
+      <span class="item-label">HQ-AP11 為 STATIC port-security</span>
+      <span class="item-val"><span class="badge badge-static">STATIC MAC</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- 新增異常 -->
+<div class="subsection">⚠️ 新增異常告警</div>
+
+<div class="alert-block alert-warn">
+  <span class="alert-icon">⚡</span>
+  <div class="alert-body">
+    <strong>2F-OA (192.168.21.253) — Gi2/0/26 Link-Flap 錯誤停用 &nbsp;<span class="badge badge-warn">嚴重性：中</span></strong>
+    <div class="alert-cmd">%PM-4-ERR_DISABLE: link-flap error detected on Gi2/0/26, putting Gi2/0/26 in err-disable state</div>
+    <div class="suggestion">→ 事件時間：May 25 2026 08:20 UTC。建議執行 <code>show interfaces Gi2/0/26</code> 確認原因，視狀況 shutdown / no shutdown，或更換跳線。</div>
+  </div>
+</div>
+
+<div class="alert-block alert-warn" style="background:#f0fdf4;border-color:#86efac">
+  <span class="alert-icon">🔄</span>
+  <div class="alert-body">
+    <strong>9F-A-OA (192.168.91.253) — Gi4/0/1 Link-Flap（已自動恢復）&nbsp;<span class="badge badge-ok">嚴重性：低</span></strong>
+    <div class="alert-cmd">%PM-4-ERR_DISABLE: link-flap on Gi4/0/1 → %PM-4-ERR_RECOVER</div>
+    <div class="suggestion">→ 事件時間：May 28 2026 10:52 UTC，10:57 自動恢復。持續觀察；若再次發生請更換跳線或確認對端設備電源穩定性。</div>
+  </div>
+</div>
+
+<!-- 持續風險 -->
+<div class="subsection">🔄 持續 EoL 風險（未變動）</div>
+<table>
+  <thead>
+    <tr><th>設備</th><th>IP</th><th>OS 版本</th><th>CVE 風險</th><th>狀態</th></tr>
+  </thead>
+  <tbody>
+    <tr class="row-eol">
+      <td><strong>WLC-SSO-Active</strong></td>
+      <td class="mono">192.168.7.252</td>
+      <td><span class="badge badge-danger">AireOS 8.8.120.0</span></td>
+      <td>CVE-2020-3453 (802.11 MAC DoS)<br>CVE-2021-1469 (REST API Auth Bypass)</td>
+      <td><span class="badge badge-danger">EoL</span></td>
+    </tr>
+    <tr class="row-eol">
+      <td><strong>B1-OA</strong></td>
+      <td class="mono">192.168.211.253</td>
+      <td><span class="badge badge-danger">IOS XE 16.9.7</span></td>
+      <td>CVE-2020-3227 (Web UI)<br>CVE-2020-3118 (CDP DoS/RCE)</td>
+      <td><span class="badge badge-danger">EoL</span></td>
+    </tr>
+    <tr class="row-new-sw">
+      <td><strong>2F-B-OA</strong> <span class="badge badge-new">本次新發現</span></td>
+      <td class="mono">192.168.21.252</td>
+      <td><span class="badge badge-danger">IOS XE 16.9.7</span></td>
+      <td>CVE-2020-3227 (Web UI)<br>CVE-2020-3118 (CDP DoS/RCE)</td>
+      <td><span class="badge badge-danger">EoL</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="page-footer">
+  <span>範例企業科技 · ACME 2026 Q1 EDGE 維護報告 · 機密文件</span>
+  <span>2026-05-28</span>
+</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     頁 3 — 拓撲圖 + 設備狀態總覽
+════════════════════════════════════════════ -->
+<div class="page">
+<div class="page-header">
+  <span class="ph-logo">ACME 網路維護報告 2026 Q1 EDGE</span>
+  <span class="ph-badge">第 3 頁 · 拓撲 &amp; 設備總覽</span>
+</div>
+
+<div class="section-title">
+  <span class="sec-num">2</span>
+  <span>網路核心接線架構圖（Core CDP Topology）</span>
+</div>
+<div class="topo-container">
+  <div class="topo-core">
+    <div class="topo-node" style="margin-bottom:6px">
+      🖧 &nbsp;ACME_CoreSW (C9606R / IOS XE 17.12.6)<br>
+      <span style="font-size:7pt;opacity:0.85">192.168.4.1 &nbsp;·&nbsp; 核心交換器 &nbsp;·&nbsp; PoE+ 骨幹</span>
+    </div>
+  </div>
+  <div class="topo-connectors">
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge eol-edge">WLC-SSO-Active<br><span style="color:#78350f">AireOS 8.8 ⚠</span></div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge eol-edge">B1-OA<br><span style="color:#78350f">16.9.7 EoL ⚠</span></div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">B1-24P-Phone<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">1F (A/B OA)<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">1F (A/B Phone)<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge" style="background:#fff3cd;border-color:#fbbf24;color:#78350f">2F-OA ⚠<br>Gi2/0/26 err</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">2F-Phone<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge new-edge">2F-B-OA ⭐NEW<br><span style="color:#7c3aed">16.9.7 EoL ⚠</span></div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">3F (A/B OA)<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">3F (A/B Phone)<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">4F (A/B OA)<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">4F (A/B Phone)<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge" style="background:#fff3cd;border-color:#fbbf24;color:#78350f">9F-A-OA ⚠<br>Gi4/0/1 flap</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">9F (A/B Phone)<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">9F-B-OA<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">10F (A/B OA)<br>17.9.4a ✓</div>
+    </div>
+    <div class="topo-edge-group">
+      <div class="topo-line"></div>
+      <div class="topo-edge">10F (A/B Phone)<br>17.9.4a ✓</div>
+    </div>
+  </div>
+  <div class="topo-legend">
+    <div class="topo-legend-item"><div class="legend-dot" style="background:#1a3a6b"></div> 正常運行</div>
+    <div class="topo-legend-item"><div class="legend-dot" style="background:#d97706"></div> EoL / 告警</div>
+    <div class="topo-legend-item"><div class="legend-dot" style="background:#7c3aed"></div> 本次新發現</div>
+    <div class="topo-legend-item"><div class="legend-dot" style="background:#fbbf24"></div> Syslog 異常</div>
+  </div>
+</div>
+
+<!-- 設備狀態總覽 -->
+<div class="section-title" style="margin-top:12px">
+  <span class="sec-num">3</span>
+  <span>設備狀態總覽與 CVE 漏洞評估表</span>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Hostname</th><th>IP 位址</th><th>OS 版本</th>
+      <th style="text-align:center">DR<br>純化</th>
+      <th style="text-align:center">異常<br>日誌</th>
+      <th>CVE 評估</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>(Cisco Controller)</td><td class="mono">192.168.7.252</td><td><span class="badge badge-danger">8.8.120.0</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td><span class="badge badge-danger">EoL CVE-2020-3453, 2021-1469</span></td></tr>
+    <tr><td>10F-A-OA</td><td class="mono">192.168.101.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>10F-A-Phone</td><td class="mono">192.168.103.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>10F-B-OA</td><td class="mono">192.168.101.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>10F-B-Phone</td><td class="mono">192.168.103.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>1F-A-OA</td><td class="mono">192.168.11.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>1F-A-Phone</td><td class="mono">192.168.13.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>1F-B-OA</td><td class="mono">192.168.11.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>1F-B-Phone</td><td class="mono">192.168.13.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr class="row-new-sw"><td><strong>2F-B-OA</strong> <span class="badge badge-new">⭐新</span></td><td class="mono">192.168.21.252</td><td><span class="badge badge-danger">16.9.7</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td><span class="badge badge-danger">EoL CVE-2020-3227, 2020-3118</span></td></tr>
+    <tr class="row-warn"><td>2F-OA <span class="badge badge-warn">⚠</span></td><td class="mono">192.168.21.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">1</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>2F-Phone</td><td class="mono">192.168.23.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>3F-A-OA</td><td class="mono">192.168.31.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>3F-A-Phone</td><td class="mono">192.168.33.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>3F-B-OA</td><td class="mono">192.168.31.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>3F-B-Phone</td><td class="mono">192.168.33.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>4F-A-OA</td><td class="mono">192.168.41.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>4F-A-Phone</td><td class="mono">192.168.43.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>4F-B-OA</td><td class="mono">192.168.41.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>4F-B-Phone</td><td class="mono">192.168.43.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr class="row-warn"><td>9F-A-OA <span class="badge badge-warn">⚠</span></td><td class="mono">192.168.91.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">2</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>9F-A-Phone</td><td class="mono">192.168.93.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>9F-B-OA</td><td class="mono">192.168.91.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>9F-B-Phone</td><td class="mono">192.168.93.252</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr><td>B1-24P-Phone</td><td class="mono">192.168.213.253</td><td><span class="badge badge-ok">17.9.4a</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>已修復 CVE-2023-20198 等重大漏洞</td></tr>
+    <tr class="row-eol"><td><strong>B1-OA</strong></td><td class="mono">192.168.211.253</td><td><span class="badge badge-danger">16.9.7</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td><span class="badge badge-danger">EoL CVE-2020-3227, 2020-3118</span></td></tr>
+    <tr><td>ACME_CoreSW</td><td class="mono">192.168.4.1</td><td><span class="badge badge-ok">17.12.6</span></td><td style="text-align:center">✅</td><td style="text-align:center">0</td><td>未發現已知重大 CVE</td></tr>
+  </tbody>
+</table>
+
+<div class="page-footer">
+  <span>範例企業科技 · ACME 2026 Q1 EDGE 維護報告 · 機密文件</span>
+  <span>2026-05-28</span>
+</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     頁 4 — AP 接入位置表 (Part 1)
+════════════════════════════════════════════ -->
+<div class="page">
+<div class="page-header">
+  <span class="ph-logo">ACME 網路維護報告 2026 Q1 EDGE</span>
+  <span class="ph-badge">第 4 頁 · AP 接入位置 (1/2)</span>
+</div>
+
+<div class="section-title">
+  <span class="sec-num">5</span>
+  <span>AP 接入點位置對照表（MAC Table 反查）</span>
+</div>
+
+<div class="alert-block alert-info" style="margin-bottom:10px;font-size:8pt">
+  <span class="alert-icon">ℹ️</span>
+  <div class="alert-body">
+    <strong>查找方法說明</strong>
+    透過各台 Switch 的 <code>show mac address-table</code> 與 WLC <code>show ap summary</code> 乙太 MAC 比對，自動找出每台 AP 的實體接入交換器與 Port。
+    篩選邏輯：只保留非 Port-Channel（Po）端口，確認為直連。無法在 Edge Switch 直接找到者，再追查 CoreSW MAC table → CDP 鄰接 → 下游 Switch。
+    &nbsp;<strong style="color:#1e40af">結果：43 / 43 台 AP 全部定位 ✅</strong>
+  </div>
+</div>
+
+<!-- 圖例 -->
+<div style="display:flex;gap:12px;margin-bottom:8px;font-size:7.5pt;flex-wrap:wrap">
+  <span><span class="badge badge-new">⭐ CoreSW→Po 追查</span> 第一層 Edge 未找到，透過 CoreSW 向下追查</span>
+  <span><span class="badge badge-static">🔒 STATIC</span> port-security 靜態 MAC，換 AP 需同步更新</span>
+  <span><span class="badge badge-ok">✅ 正常</span> Edge Switch MAC table 直接找到</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th><th>AP 名稱</th><th>AP 乙太 MAC</th><th>AP IP</th>
+      <th>接入交換器</th><th>交換器 IP</th><th style="text-align:center">VLAN</th>
+      <th>接入 Port</th><th>備註</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>AP23-4f</td><td class="mono">aabb.cc00.0000</td><td class="mono">192.168.40.108</td><td><strong>4F-B-OA</strong></td><td class="mono">192.168.41.252</td><td style="text-align:center">2040</td><td class="mono">Gi1/0/22</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>2</td><td>AP2416.9DFC.56CC</td><td class="mono">aabb.cc00.0001</td><td class="mono">192.168.40.101</td><td><strong>4F-B-OA</strong></td><td class="mono">192.168.41.252</td><td style="text-align:center">2040</td><td class="mono">Gi1/0/17</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>3</td><td>AP4CE1.7563.F2B6</td><td class="mono">aabb.cc00.0002</td><td class="mono">192.168.90.105</td><td><strong>9F-B-OA</strong></td><td class="mono">192.168.91.252</td><td style="text-align:center">2090</td><td class="mono">Gi1/0/15</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>4</td><td>AP4CE1.75E8.9B66</td><td class="mono">aabb.cc00.0003</td><td class="mono">192.168.90.107</td><td><strong>9F-A-OA</strong></td><td class="mono">192.168.91.253</td><td style="text-align:center">2090</td><td class="mono">Gi1/0/13</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>5</td><td>AP4CE1.75E8.AE6C</td><td class="mono">aabb.cc00.0004</td><td class="mono">192.168.90.112</td><td><strong>9F-A-OA</strong></td><td class="mono">192.168.91.253</td><td style="text-align:center">2090</td><td class="mono">Gi1/0/9</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>6</td><td>AP4CE1.7609.DA62</td><td class="mono">aabb.cc00.0005</td><td class="mono">192.168.90.106</td><td><strong>9F-B-OA</strong></td><td class="mono">192.168.91.252</td><td style="text-align:center">2090</td><td class="mono">Gi1/0/19</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>7</td><td>AP4CE1.7609.DE1C</td><td class="mono">aabb.cc00.0006</td><td class="mono">192.168.91.12</td><td><strong>9F-B-OA</strong></td><td class="mono">192.168.91.252</td><td style="text-align:center">2090</td><td class="mono">Gi1/0/17</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>8</td><td>AP4CE1.7609.DF4E</td><td class="mono">aabb.cc00.0007</td><td class="mono">192.168.90.108</td><td><strong>9F-A-OA</strong></td><td class="mono">192.168.91.253</td><td style="text-align:center">2090</td><td class="mono">Gi1/0/11</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>9</td><td>AP4CE1.7609.E124</td><td class="mono">aabb.cc00.0008</td><td class="mono">192.168.40.94</td><td><strong>4F-B-OA</strong></td><td class="mono">192.168.41.252</td><td style="text-align:center">2040</td><td class="mono">Gi1/0/21</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>10</td><td>AP4CE1.7609.E418</td><td class="mono">aabb.cc00.0009</td><td class="mono">192.168.90.113</td><td><strong>9F-A-OA</strong></td><td class="mono">192.168.91.253</td><td style="text-align:center">2090</td><td class="mono">Gi1/0/7</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>11</td><td>APA0B4.3988.BF84</td><td class="mono">aabb.cc00.000a</td><td class="mono">192.168.90.104</td><td><strong>9F-B-OA</strong></td><td class="mono">192.168.91.252</td><td style="text-align:center">2090</td><td class="mono">Gi1/0/11</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>12</td><td>APA0B4.3988.BF9C</td><td class="mono">aabb.cc00.000b</td><td class="mono">192.168.40.90</td><td><strong>4F-B-OA</strong></td><td class="mono">192.168.41.252</td><td style="text-align:center">2040</td><td class="mono">Gi1/0/19</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>13</td><td>APA0B4.3988.BFE8</td><td class="mono">aabb.cc00.000c</td><td class="mono">192.168.90.103</td><td><strong>9F-B-OA</strong></td><td class="mono">192.168.91.252</td><td style="text-align:center">2090</td><td class="mono">Gi1/0/13</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>14</td><td>B2-AP28</td><td class="mono">aabb.cc00.000d</td><td class="mono">192.168.6.63</td><td><strong>B1-24P-Phone</strong></td><td class="mono">192.168.213.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/24</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>15</td><td>F1-AP24</td><td class="mono">aabb.cc00.000e</td><td class="mono">192.168.40.131</td><td><strong>4F-A-OA</strong></td><td class="mono">192.168.41.253</td><td style="text-align:center">2040</td><td class="mono">Gi1/0/4</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>16</td><td>F1-AP46</td><td class="mono">aabb.cc00.000f</td><td class="mono">192.168.20.143</td><td><strong>2F-OA</strong></td><td class="mono">192.168.21.253</td><td style="text-align:center">2020</td><td class="mono">Gi1/0/19</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>17</td><td>HQ-AP02</td><td class="mono">aabb.cc00.0010</td><td class="mono">192.168.6.2</td><td><strong>1F-A-Phone</strong></td><td class="mono">192.168.13.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/24</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>18</td><td>HQ-AP04</td><td class="mono">aabb.cc00.0011</td><td class="mono">192.168.6.4</td><td><strong>B1-24P-Phone</strong></td><td class="mono">192.168.213.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/5</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>19</td><td>HQ-AP05</td><td class="mono">aabb.cc00.0012</td><td class="mono">192.168.6.5</td><td><strong>10F-A-OA</strong></td><td class="mono">192.168.101.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/3</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>20</td><td>HQ-AP06</td><td class="mono">aabb.cc00.0013</td><td class="mono">192.168.6.6</td><td><strong>10F-B-OA</strong></td><td class="mono">192.168.101.252</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/2</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>21</td><td>HQ-AP07</td><td class="mono">aabb.cc00.0014</td><td class="mono">192.168.6.7</td><td><strong>10F-B-OA</strong></td><td class="mono">192.168.101.252</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/3</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>22</td><td>HQ-AP08</td><td class="mono">aabb.cc00.0015</td><td class="mono">192.168.6.8</td><td><strong>3F-B-OA</strong></td><td class="mono">192.168.31.252</td><td style="text-align:center">1900</td><td class="mono">Gi3/0/48</td><td><span class="badge badge-ok">✅</span></td></tr>
+  </tbody>
+</table>
+
+<div class="page-footer">
+  <span>範例企業科技 · ACME 2026 Q1 EDGE 維護報告 · 機密文件</span>
+  <span>2026-05-28</span>
+</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     頁 5 — AP 接入位置表 (Part 2)
+════════════════════════════════════════════ -->
+<div class="page">
+<div class="page-header">
+  <span class="ph-logo">ACME 網路維護報告 2026 Q1 EDGE</span>
+  <span class="ph-badge">第 5 頁 · AP 接入位置 (2/2)</span>
+</div>
+
+<div class="section-title">
+  <span class="sec-num">5</span>
+  <span>AP 接入點位置對照表（續）</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th><th>AP 名稱</th><th>AP 乙太 MAC</th><th>AP IP</th>
+      <th>接入交換器</th><th>交換器 IP</th><th style="text-align:center">VLAN</th>
+      <th>接入 Port</th><th>備註</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>23</td><td>HQ-AP09</td><td class="mono">aabb.cc00.0016</td><td class="mono">192.168.6.9</td><td><strong>3F-B-OA</strong></td><td class="mono">192.168.31.252</td><td style="text-align:center">1900</td><td class="mono">Gi3/0/48</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>24</td><td>HQ-AP1</td><td class="mono">aabb.cc00.0017</td><td class="mono">192.168.100.21</td><td><strong>10F-A-OA</strong></td><td class="mono">192.168.101.253</td><td style="text-align:center">2100</td><td class="mono">Gi1/0/5</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>25</td><td>HQ-AP10</td><td class="mono">aabb.cc00.0018</td><td class="mono">192.168.6.10</td><td><strong>2F-OA</strong></td><td class="mono">192.168.21.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/10</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr class="row-static-ps"><td>26</td><td><strong>HQ-AP11</strong></td><td class="mono">aabb.cc00.0019</td><td class="mono">192.168.6.11</td><td><strong>9F-B-OA</strong></td><td class="mono">192.168.91.252</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/3</td><td><span class="badge badge-static">🔒 STATIC PS</span></td></tr>
+    <tr><td>27</td><td>HQ-AP13</td><td class="mono">aabb.cc00.001a</td><td class="mono">192.168.6.13</td><td><strong>9F-A-OA</strong></td><td class="mono">192.168.91.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/5</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>28</td><td>HQ-AP14</td><td class="mono">aabb.cc00.001b</td><td class="mono">192.168.6.14</td><td><strong>9F-B-OA</strong></td><td class="mono">192.168.91.252</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/5</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>29</td><td>HQ-AP16</td><td class="mono">aabb.cc00.001c</td><td class="mono">192.168.6.16</td><td><strong>9F-B-OA</strong></td><td class="mono">192.168.91.252</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/9</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>30</td><td>HQ-AP17</td><td class="mono">aabb.cc00.001d</td><td class="mono">192.168.6.17</td><td><strong>9F-A-OA</strong></td><td class="mono">192.168.91.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/1</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>31</td><td>HQ-AP20</td><td class="mono">aabb.cc00.001e</td><td class="mono">192.168.6.20</td><td><strong>2F-OA</strong></td><td class="mono">192.168.21.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/2</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>32</td><td>HQ-AP21</td><td class="mono">aabb.cc00.001f</td><td class="mono">192.168.6.21</td><td><strong>2F-OA</strong></td><td class="mono">192.168.21.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/20</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>33</td><td>HQ-AP22(2F)</td><td class="mono">aabb.cc00.0020</td><td class="mono">192.168.6.22</td><td><strong>2F-OA</strong></td><td class="mono">192.168.21.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/1</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>34</td><td>HQ-AP25</td><td class="mono">aabb.cc00.0021</td><td class="mono">192.168.6.118</td><td><strong>10F-B-OA</strong></td><td class="mono">192.168.101.252</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/11</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>35</td><td>HQ-AP26</td><td class="mono">aabb.cc00.0022</td><td class="mono">192.168.6.26</td><td><strong>3F-A-Phone</strong></td><td class="mono">192.168.33.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/48</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>36</td><td>HQ-AP27</td><td class="mono">aabb.cc00.0023</td><td class="mono">192.168.6.27</td><td><strong>3F-A-Phone</strong></td><td class="mono">192.168.33.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/46</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>37</td><td>HQ-AP29</td><td class="mono">aabb.cc00.0024</td><td class="mono">192.168.6.29</td><td><strong>1F-B-Phone</strong></td><td class="mono">192.168.13.252</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/13</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>38</td><td>HQ-AP31</td><td class="mono">aabb.cc00.0025</td><td class="mono">192.168.6.31</td><td><strong>3F-A-Phone</strong></td><td class="mono">192.168.33.253</td><td style="text-align:center">1900</td><td class="mono">Gi1/0/47</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr><td>39</td><td>HQ-AP32(3)</td><td class="mono">aabb.cc00.0026</td><td class="mono">192.168.100.101</td><td><strong>10F-B-OA</strong></td><td class="mono">192.168.101.252</td><td style="text-align:center">2100</td><td class="mono">Gi1/0/1</td><td><span class="badge badge-ok">✅</span></td></tr>
+    <tr class="row-core-trace"><td>40</td><td><strong>HQ-AP39</strong></td><td class="mono">aabb.cc00.0027</td><td class="mono">192.168.20.133</td><td><strong>2F-B-OA</strong></td><td class="mono">192.168.21.252</td><td style="text-align:center">2020</td><td class="mono">Gi3/0/20</td><td><span class="badge badge-new">⭐ CoreSW→Po37</span></td></tr>
+    <tr class="row-core-trace"><td>41</td><td><strong>HQ-AP40</strong></td><td class="mono">aabb.cc00.0028</td><td class="mono">192.168.20.138</td><td><strong>2F-B-OA</strong></td><td class="mono">192.168.21.252</td><td style="text-align:center">2020</td><td class="mono">Gi3/0/23</td><td><span class="badge badge-new">⭐ CoreSW→Po37</span></td></tr>
+    <tr class="row-core-trace"><td>42</td><td><strong>HQ-AP41</strong></td><td class="mono">aabb.cc00.0029</td><td class="mono">192.168.20.137</td><td><strong>2F-B-OA</strong></td><td class="mono">192.168.21.252</td><td style="text-align:center">2020</td><td class="mono">Gi3/0/22</td><td><span class="badge badge-new">⭐ CoreSW→Po37</span></td></tr>
+    <tr class="row-core-trace"><td>43</td><td><strong>HQ-AP42-2F</strong></td><td class="mono">aabb.cc00.002a</td><td class="mono">192.168.20.134</td><td><strong>2F-B-OA</strong></td><td class="mono">192.168.21.252</td><td style="text-align:center">2020</td><td class="mono">Gi3/0/21</td><td><span class="badge badge-new">⭐ CoreSW→Po37</span></td></tr>
+  </tbody>
+</table>
+
+<div style="margin-top:8px;font-size:7.5pt;color:#5a6a8a;background:#f6f8fc;border-radius:6px;padding:8px 12px;border-left:3px solid #7c3aed">
+  <strong>⭐ 追查說明 (HQ-AP39/40/41/42-2F)：</strong>
+  第一輪 Edge Switch MAC table 掃描未直接找到這 4 台 AP → 回查 CoreSW MAC table 發現 AP MAC 出現在 Po37 →
+  CoreSW config 顯示 <code>Po37 = connect to 2F-B-OA</code> → 2F-B-OA 不在 inventory →
+  透過 CDP 取得 IP <code>192.168.21.252</code> → 補入 inventory 並 SSH 採集 →
+  於 2F-B-OA MAC table 找到 4 台 AP 各自的接入 Port。
+</div>
+<div style="margin-top:6px;font-size:7.5pt;color:#5a6a8a;background:#fff7ed;border-radius:6px;padding:8px 12px;border-left:3px solid #ea580c">
+  <strong>🔒 STATIC 說明 (HQ-AP11)：</strong>
+  9F-B-OA Gi1/0/3 設有 <code>switchport port-security mac-address aabb.cc00.0019</code>，
+  MAC 條目以 STATIC 方式寫入，初版腳本僅比對 DYNAMIC 條目故漏查。
+  已修正腳本同時匹配 STATIC + DYNAMIC。<strong>注意：若此 AP 更換硬體，需同步更新 port-security 靜態 MAC 設定。</strong>
+</div>
+
+<div class="page-footer">
+  <span>範例企業科技 · ACME 2026 Q1 EDGE 維護報告 · 機密文件</span>
+  <span>2026-05-28</span>
+</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     頁 6 — Syslog 分析 + 維護建議
+════════════════════════════════════════════ -->
+<div class="page">
+<div class="page-header">
+  <span class="ph-logo">ACME 網路維護報告 2026 Q1 EDGE</span>
+  <span class="ph-badge">第 6 頁 · 告警 &amp; 維護建議</span>
+</div>
+
+<!-- Syslog -->
+<div class="section-title">
+  <span class="sec-num">6</span>
+  <span>設備詳細狀態與 Syslog 分析</span>
+</div>
+<div style="font-size:7.5pt;color:#5a6a8a;margin-bottom:9px">
+  💡 說明：<code>Syslog logging: enabled (0 messages dropped...)</code> 屬系統連線正常之狀態回報，非錯誤事件。其他 24 台設備日誌乾淨，無重大 Error 紀錄。
+</div>
+
+<div class="alert-block alert-warn">
+  <span class="alert-icon">⚡</span>
+  <div class="alert-body">
+    <strong>2F-OA (192.168.21.253) — OS: 17.9.4a &nbsp;<span class="badge badge-warn">新增異常</span></strong>
+    <div class="alert-cmd">May 25 2026 08:20:16.780 utc: %PM-4-ERR_DISABLE: link-flap error detected on Gi2/0/26, putting Gi2/0/26 in err-disable state</div>
+    <div class="suggestion">Gi2/0/26 因 link-flap 超過門限而被自動停用。建議現場確認對接設備（PC/AP/印表機等），排除實體連線問題後執行 <code>shutdown / no shutdown</code> 恢復。</div>
+  </div>
+</div>
+
+<div class="alert-block alert-warn" style="background:#f0fdf4;border-color:#86efac">
+  <span class="alert-icon">🔄</span>
+  <div class="alert-body">
+    <strong>9F-A-OA (192.168.91.253) — OS: 17.9.4a &nbsp;<span class="badge badge-ok">已自動恢復</span></strong>
+    <div class="alert-cmd">May 28 2026 10:52:21.030 utc: %PM-4-ERR_DISABLE: link-flap error detected on Gi4/0/1</div>
+    <div class="alert-cmd">May 28 2026 10:57:21.019 utc: %PM-4-ERR_RECOVER: Attempting to recover from link-flap err-disable state on Gi4/0/1</div>
+    <div class="suggestion">Gi4/0/1 於 10:52 err-disable，10:57 自動恢復（err-recover 定時器觸發）。持續觀察；若頻繁發生請更換跳線或確認對端設備電源穩定性。</div>
+  </div>
+</div>
+
+<div class="alert-block alert-danger">
+  <span class="alert-icon">🔒</span>
+  <div class="alert-body">
+    <strong>2F-B-OA (192.168.21.252) — OS: 16.9.7 EoL &nbsp;<span class="badge badge-new">本次新增採集</span></strong>
+    <div class="suggestion">系統日誌乾淨，但 OS 版本為 EoL。此台 Switch 先前未列入 inventory，透過 CoreSW CDP 追查 Po37 發現。已補入 inventory 並採集完整備份（DR config、annotated config）。
+    <strong>建議優先排程升板至 IOS XE 17.9.x。</strong></div>
+  </div>
+</div>
+
+<!-- 維護建議 -->
+<div class="section-title" style="margin-top:14px">
+  <span class="sec-num">7</span>
+  <span>維護建議與後續追蹤</span>
+</div>
+
+<ul class="rec-list">
+  <li class="rec-item">
+    <div class="rec-num">1</div>
+    <div class="rec-body">
+      <strong>2F-OA Gi2/0/26 錯誤停用處置</strong><br>
+      執行 <code>show interfaces Gi2/0/26</code> 確認 err-disable 原因及對接設備；排除後 <code>shutdown / no shutdown</code> 恢復，持續觀察是否再次觸發。若持續發生，考慮調整 <code>errdisable recovery interval</code> 或更換跳線。
+    </div>
+    <span class="rec-priority pri-medium">優先：中</span>
+  </li>
+  <li class="rec-item">
+    <div class="rec-num">2</div>
+    <div class="rec-body">
+      <strong>9F-A-OA Gi4/0/1 Link-Flap 追蹤</strong><br>
+      雖已自動恢復，建議持續監控。若再次 err-disable，檢查跳線品質與對端設備（AP 或 PC）電源供應。
+    </div>
+    <span class="rec-priority pri-low">優先：低</span>
+  </li>
+  <li class="rec-item">
+    <div class="rec-num">3</div>
+    <div class="rec-body">
+      <strong>2F-B-OA &amp; B1-OA 韌體升級（高優先）</strong><br>
+      IOS XE 16.9.7 為 EoL，含 CVE-2020-3227（Web UI RCE）與 CVE-2020-3118（CDP DoS/RCE）重大漏洞。建議排程升板至 17.9.x；若設備不支援，應評估汰換。
+    </div>
+    <span class="rec-priority pri-high">優先：高</span>
+  </li>
+  <li class="rec-item">
+    <div class="rec-num">4</div>
+    <div class="rec-body">
+      <strong>WLC 淘汰規劃</strong><br>
+      Cisco AIR-CT3504-K9 / AireOS 8.8 已知不再接收重大安全修補，建議評估引進 Cisco C9800 系列，提供更高安全性與 Wi-Fi 6 支援。
+    </div>
+    <span class="rec-priority pri-high">優先：高</span>
+  </li>
+  <li class="rec-item">
+    <div class="rec-num">5</div>
+    <div class="rec-body">
+      <strong>HQ-AP11 Port-Security 管理</strong><br>
+      9F-B-OA Gi1/0/3 設有靜態 MAC port-security（<code>aabb.cc00.0019</code>）。若 HQ-AP11 更換硬體，需同步至 9F-B-OA 更新靜態 MAC，否則 AP 上線後因 port-security violation 將被停用。
+    </div>
+    <span class="rec-priority pri-medium">優先：中</span>
+  </li>
+  <li class="rec-item">
+    <div class="rec-num">6</div>
+    <div class="rec-body">
+      <strong>Inventory 已更新</strong><br>
+      <code>ACME_2026Q2_inventory.csv</code> 已加入 <strong>2F-B-OA (192.168.21.252)</strong>，下次維護將自動納入 SSH 採集範圍，不需再手動追查。
+    </div>
+    <span class="rec-priority pri-low">優先：已完成</span>
+  </li>
+</ul>
+
+<!-- 簽核欄 -->
+<div style="margin-top:18px;border:1.5px solid #d0ddf0;border-radius:8px;padding:12px 14px">
+  <div style="font-size:9pt;font-weight:700;color:#1a3a6b;margin-bottom:10px">文件審核與簽核</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:8pt">
+    <div>
+      <div style="color:#5a6a8a;font-size:7pt;margin-bottom:4px">報告製作</div>
+      <div style="border-bottom:1px solid #9aaccc;height:28px"></div>
+      <div style="color:#5a6a8a;font-size:7pt;margin-top:3px">姓名 / 日期</div>
+    </div>
+    <div>
+      <div style="color:#5a6a8a;font-size:7pt;margin-bottom:4px">網路工程師審核</div>
+      <div style="border-bottom:1px solid #9aaccc;height:28px"></div>
+      <div style="color:#5a6a8a;font-size:7pt;margin-top:3px">姓名 / 日期</div>
+    </div>
+    <div>
+      <div style="color:#5a6a8a;font-size:7pt;margin-bottom:4px">部門主管核准</div>
+      <div style="border-bottom:1px solid #9aaccc;height:28px"></div>
+      <div style="color:#5a6a8a;font-size:7pt;margin-top:3px">姓名 / 日期</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">
+  <span>範例企業科技 · ACME 2026 Q1 EDGE 維護報告 · 機密文件 · 自動化維護系統產生</span>
+  <span>2026-05-28 &nbsp;|&nbsp; 第 6 頁（共 6 頁）</span>
+</div>
+</div>
+
+</body>
+</html>
