@@ -9,7 +9,8 @@
 - **並行化 SSH**：預設 5 條並行緒，大量設備快速採集
 - **CVE 即時比對**：AI Agent 線上搜尋最新 CVE，不使用過期靜態資料庫
 - **四大產出物**：Raw 備份、DR 設定檔、中文註解版、Mermaid 拓樸報告
-- **AP 追蹤**：透過 `show mac address-table` + CDP 交叉比對 AP 接入位置
+- **Err-Disabled 自動偵測**：解析 `show interfaces status err-disabled` + syslog 交叉比對，輸出觸發原因與處置建議
+- **AP 接入位置反查**：`show mac address-table` + CDP 多層追蹤，定位每台 AP 的實體 Switch 與 Port（支援 STATIC port-security 條目）
 
 ## 🚀 快速開始
 
@@ -45,9 +46,10 @@ NetAuto_Maintainer/
 │   └── README.md
 ├── scripts/
 │   ├── collect_show_commands.py    ← SSH 自動嗅探與並行採集
-│   └── process_offline_data.py     ← 離線分析、拓樸產出與動態中文註解
+│   └── process_offline_data.py     ← 離線分析、拓樸產出、Err-Disabled 偵測、AP 位置反查
 └── examples/                       ← 去識別化的範例產出
-    └── sample_maintenance_report.md
+    ├── sample_maintenance_report.md           ← Markdown 格式範例
+    └── sample_edge_maintenance_report.html    ← A4 HTML 格式範例（含封面、拓樸圖、AP 位置表）
 ```
 
 ## 🔧 新增設備支援
@@ -60,8 +62,30 @@ NetAuto_Maintainer/
 
 ## 📊 範例與實際輸出
 
-*   **公開展示範本**：本專案提供一份[去識別化的維護報告範本 (examples/sample_maintenance_report.md)](examples/sample_maintenance_report.md)，僅供您在公開 Repo 展示本專案的運作成果。
-*   **實際執行產出**：您實際執行腳本所產出的報告與備份（包含真實 IP 與架構），會完整儲存於您指定的輸出目錄（預設為 `output/` 目錄）。為保護機敏資料，該目錄已寫入 `.gitignore`，**絕對不會**被加入版本控制。
+本專案在 `examples/` 目錄下提供兩份去識別化的維護報告，所有真實 IP、MAC 位址與公司資訊均已替換：
+
+| 範例檔案 | 格式 | 說明 |
+|----------|------|------|
+| [sample_maintenance_report.md](examples/sample_maintenance_report.md) | Markdown | 基本維護報告，含拓樸圖與設備 CVE 狀態表 |
+| [**sample_edge_maintenance_report.html**](examples/sample_edge_maintenance_report.html) | **HTML（A4 可列印）** | **完整 6 頁報告**，含封面、Q1/Q2 差異摘要、Err-Disabled Port 彙整表、AP 接入位置對照表（43 台 AP 全定位）；可直接由瀏覽器列印或存為 PDF |
+
+> **HTML 報告轉 PDF**：瀏覽器開啟後 `Ctrl+P` → 印表機選「另存為 PDF」→ A4 直向 → 取消頁首頁尾 → 儲存。
+> 或使用 Chrome headless：
+> ```bash
+> chrome --headless --print-to-pdf=report.pdf sample_edge_maintenance_report.html
+> ```
+
+**報告自動產出章節一覽**：
+
+| 章節 | 內容 |
+|------|------|
+| §1 Core CDP Topology | Mermaid 格式的骨幹拓樸圖，自動過濾 AP 與 IP Phone |
+| §2 設備狀態總覽 | OS 版本、DR 純化狀態、異常日誌筆數、CVE 快速評估 |
+| §3 Syslog 詳細分析 | 各設備 Error/Critical 事件（Top 5） |
+| **§4 Err-Disabled Port 彙整** | 全站被停用的 Port、觸發原因（link-flap / bpduguard / psecure 等）、處置建議 |
+| **§5 AP 接入位置對照表** | 每台 AP 所在的 Switch 與 Port（MAC Table 反查，支援 STATIC 條目） |
+
+**實際執行產出**：您執行腳本所產出的報告與備份（含真實 IP 與架構），儲存於您指定的輸出目錄（預設 `output/`）。為保護機敏資料，該目錄已寫入 `.gitignore`，**絕對不會**被加入版本控制。
 
 ## 🏛️ 專案流程架構
 
@@ -84,7 +108,9 @@ graph TD
         D -.->|"讀取中文註解<br>與拓樸指令"| H
         H -->|"純化設定檔<br>DR用"| I["output/dr_configs/"]
         H -->|"動態嵌入<br>中文註解"| J["output/annotated_configs/"]
-        H -->|"解析 Topology<br>及 OS 版本"| K["output/maintenance_report.md"]
+        H -->|"§1-3 Topology<br>OS / Syslog"| K["output/maintenance_report.md"]
+        H -->|"§4 Err-Disabled<br>Port 彙整表"| K
+        H -->|"§5 AP 接入<br>位置對照表"| K
     end
 
     subgraph stage3 ["階段三：AI 即時安全分析"]
