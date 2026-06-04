@@ -49,7 +49,8 @@ NetAuto_Maintainer/
 │   └── process_offline_data.py     ← 離線分析、拓樸產出、Err-Disabled 偵測、AP 位置反查
 └── examples/                       ← 去識別化的範例產出
     ├── sample_maintenance_report.md           ← Markdown 格式範例
-    └── sample_edge_maintenance_report.html    ← A4 HTML 格式範例（含封面、拓樸圖、AP 位置表）
+    ├── sample_edge_maintenance_report.html    ← A4 HTML 格式範例（含封面、拓樸圖、AP 位置表）
+    └── sample_edge_maintenance_report.pdf     ← 同上之預產生 PDF（可直接開啟檢視）
 ```
 
 ## 🔧 新增設備支援
@@ -62,14 +63,16 @@ NetAuto_Maintainer/
 
 ## 📊 範例與實際輸出
 
-本專案在 `examples/` 目錄下提供兩份去識別化的維護報告，所有真實 IP、MAC 位址與公司資訊均已替換：
+本專案在 `examples/` 目錄下提供三份去識別化的維護報告，所有真實 IP、MAC 位址、AP 硬體識別碼與公司資訊均已替換：
 
 | 範例檔案 | 格式 | 說明 |
 |----------|------|------|
 | [sample_maintenance_report.md](examples/sample_maintenance_report.md) | Markdown | 基本維護報告，含拓樸圖與設備 CVE 狀態表 |
 | [**sample_edge_maintenance_report.html**](examples/sample_edge_maintenance_report.html) | **HTML（A4 可列印）** | **完整 6 頁報告**，含封面、Q1/Q2 差異摘要、Err-Disabled Port 彙整表、AP 接入位置對照表（43 台 AP 全定位）；可直接由瀏覽器列印或存為 PDF |
+| [**sample_edge_maintenance_report.pdf**](examples/sample_edge_maintenance_report.pdf) | **PDF** | 同上之預產生 PDF，可直接開啟或分享，無需瀏覽器 |
 
-> **HTML 報告轉 PDF**：瀏覽器開啟後 `Ctrl+P` → 印表機選「另存為 PDF」→ A4 直向 → 取消頁首頁尾 → 儲存。
+> **HTML 報告轉 PDF**：`examples/` 目錄已附預產生的 PDF，可直接使用。
+> 若需重新產生（例如修改報告後），瀏覽器開啟 HTML 後 `Ctrl+P` → 印表機選「另存為 PDF」→ A4 直向 → 取消頁首頁尾 → 儲存。
 > 或使用 Chrome headless：
 > ```bash
 > chrome --headless --print-to-pdf=report.pdf sample_edge_maintenance_report.html
