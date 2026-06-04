@@ -61,7 +61,7 @@ def parse_ap_list_from_wlc(content):
             continue
         ap_name = tokens[0]
         mac = normalize_mac_to_cisco(mac_match.group(1))
-        ip_match = re.search(r'\bTW\s+([\d]+\.[\d]+\.[\d]+\.[\d]+)', line)
+        ip_match = re.search(r'\b(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b', line)
         ap_ip = ip_match.group(1) if ip_match else 'N/A'
         if mac:
             aps[mac] = (ap_name, ap_ip)
@@ -182,7 +182,7 @@ def process_device_file(filepath, dr_dir, annotated_dir):
     neighbors = []
     for match in re.finditer(r'Device ID:\s*(.+)', cdp_out):
         raw_id = match.group(1).split('.')[0].strip()
-        if re.match(r'^(SEP|ATA|AP|HQ-AP|F1-AP|B2-AP|CN97)', raw_id, re.IGNORECASE):
+        if re.match(r'^(SEP|ATA|AP[A-F0-9])', raw_id, re.IGNORECASE):
             continue
         neighbors.append(raw_id)
 
