@@ -206,6 +206,24 @@ def process_device_file(filepath, dr_dir, annotated_dir):
         'raw_content': content,
     }
 
+def generate_next_start_md(output_dir):
+    """在輸出目錄產生下季維護的啟動提示 START.md"""
+    skill_md = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'SKILL.md'))
+    output_abs = os.path.abspath(output_dir)
+    start_path = os.path.join(output_abs, 'START.md')
+    with open(start_path, 'w', encoding='utf-8') as f:
+        f.write(
+            "# 下季維護啟動提示（由 process_offline_data.py 自動產生）\n"
+            "# 將以下內容貼入 AI 對話視窗，並將 <填入> 替換為實際路徑\n\n"
+            f"閱讀 {skill_md}\n\n"
+            "設備清單：<填入設備清單 CSV 路徑>\n"
+            f"上季報告：{output_abs}\n"
+            "本季輸出：<填入本季新建目錄路徑>\n\n"
+            "開始進行新季度定期維護\n"
+        )
+    print(f"   [START] 下季啟動提示已產生：{start_path}")
+
+
 def safe_mermaid_name(name):
     return re.sub(r'[^a-zA-Z0-9_-]', '_', name.strip())
 
@@ -363,6 +381,7 @@ def main():
         print(f"   [ERR] 發現 {len(all_err_disabled)} 個 Err-Disabled Port，已列入報告第 4 節。")
     if ap_location_table:
         print(f"   [AP] 成功建立 AP 接入位置對照表，共找到 {len(ap_location_table)} 台 AP 的直連 Port。")
+    generate_next_start_md(args.output_dir)
 
 if __name__ == "__main__":
     main()

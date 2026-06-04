@@ -2,6 +2,9 @@
 inventory.csv
 output/
 
+# Startup prompts (contain local client paths)
+START.md
+
 # Python
 __pycache__/
 *.py[cod]

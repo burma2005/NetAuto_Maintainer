@@ -12,7 +12,48 @@
 - **Err-Disabled 自動偵測**：解析 `show interfaces status err-disabled` + syslog 交叉比對，輸出觸發原因與處置建議
 - **AP 接入位置反查**：`show mac address-table` + CDP 多層追蹤，定位每台 AP 的實體 Switch 與 Port（支援 STATIC port-security 條目）
 
-## 🚀 快速開始
+---
+
+## 🤖 AI Agent 模式（推薦）
+
+本專案推薦透過 AI Agent（Claude Code、Antigravity 等）以自然語言驅動全流程，腳本僅作為底層引擎，無需手動逐步執行指令。
+
+### 啟動提示格式
+
+在 AI 對話視窗輸入以下提示即可啟動完整維護流程：
+
+```
+閱讀 <NetAuto_Maintainer 完整路徑>\SKILL.md
+
+設備清單：<客戶目錄>\<inventory 檔名>.csv
+上季報告：<客戶目錄>\<上季維護報告目錄>\
+本季輸出：<客戶目錄>\<本季維護報告目錄>\
+
+開始進行新季度定期維護
+```
+
+### 使用 START.md 簡化啟動（建議）
+
+為避免每次手動輸入路徑，建議在客戶專案目錄建立 `START.md`：
+
+1. 參考 [`START_TEMPLATE.md`](START_TEMPLATE.md) 的格式，在客戶目錄建立 `START.md` 並填入實際路徑
+2. 此後每次只需對 AI 說：**「閱讀 `<路徑>\START.md` 並執行」**
+3. 每次維護完成後，腳本會在輸出目錄**自動產生下一季的 `START.md`**，路徑全部預填，只需補上新一季的輸出目錄名稱
+
+> `START.md` 含客戶路徑，已加入 `.gitignore`，不會提交至版本控制。
+
+### AI Agent 執行流程
+
+| 階段 | 腳本 / 動作 | 產出 |
+|------|------------|------|
+| 1. 線上採集 | `collect_show_commands.py` | `raw_backups/`（各設備完整 show 輸出）|
+| 2. 離線分析 | `process_offline_data.py` | DR 備份、拓樸圖、Syslog 分析、Err-Disabled 彙整、AP 位置表 |
+| 3. CVE 比對 | AI 即時網頁搜尋 | 各設備 OS 版本對應最新漏洞（不依賴靜態資料庫）|
+| 4. 報告交付 | Append 至 Markdown | `maintenance_report.md`（含 CVE 的完整版）|
+
+---
+
+## 🚀 手動執行（進階 / 無 AI 環境）
 
 ```bash
 # 1. 安裝相依套件
@@ -29,11 +70,14 @@ python scripts/collect_show_commands.py -i inventory.csv -o output
 python scripts/process_offline_data.py -r output/raw_backups -o output
 ```
 
+---
+
 ## 📂 目錄結構
 
 ```text
 NetAuto_Maintainer/
 ├── SKILL.md                        ← AI Agent 唯一入口與 SOP 指南
+├── START_TEMPLATE.md               ← 啟動提示範本（含佔位符，進 git）
 ├── README.md                       ← 本文件
 ├── requirements.txt                ← Python 相依套件
 ├── inventory_template.csv          ← 設備清單範本 (可留空廠牌以自動嗅探)
@@ -53,6 +97,8 @@ NetAuto_Maintainer/
     └── sample_edge_maintenance_report.pdf     ← 同上之預產生 PDF（可直接開啟檢視）
 ```
 
+---
+
 ## 🔧 新增設備支援
 
 1. 複製 `command_profiles/_template.yml` 為新檔案
@@ -60,6 +106,8 @@ NetAuto_Maintainer/
 3. 存入 `command_profiles/` 即可
 
 詳見 [command_profiles/README.md](command_profiles/README.md)。
+
+---
 
 ## 📊 範例與實際輸出
 
@@ -72,7 +120,7 @@ NetAuto_Maintainer/
 | [**sample_edge_maintenance_report.pdf**](examples/sample_edge_maintenance_report.pdf) | **PDF** | 同上之預產生 PDF，可直接開啟或分享，無需瀏覽器 |
 
 > **HTML 報告轉 PDF**：`examples/` 目錄已附預產生的 PDF，可直接使用。
-> 若需重新產生（例如修改報告後），瀏覽器開啟 HTML 後 `Ctrl+P` → 印表機選「另存為 PDF」→ A4 直向 → 取消頁首頁尾 → 儲存。
+> 若需重新產生（例如修改報告後），瀏覽器開啟後 `Ctrl+P` → 印表機選「另存為 PDF」→ A4 直向 → 取消頁首頁尾 → 儲存。
 > 或使用 Chrome headless：
 > ```bash
 > chrome --headless --print-to-pdf=report.pdf sample_edge_maintenance_report.html
@@ -89,6 +137,8 @@ NetAuto_Maintainer/
 | **§5 AP 接入位置對照表** | 每台 AP 所在的 Switch 與 Port（MAC Table 反查，支援 STATIC 條目） |
 
 **實際執行產出**：您執行腳本所產出的報告與備份（含真實 IP 與架構），儲存於您指定的輸出目錄（預設 `output/`）。為保護機敏資料，該目錄已寫入 `.gitignore`，**絕對不會**被加入版本控制。
+
+---
 
 ## 🏛️ 專案流程架構
 
@@ -139,11 +189,16 @@ graph TD
     style M fill:#fff,stroke:#aaa,stroke-width:1px,color:#333
 ```
 
+---
+
 ## ⚠️ 安全須知
 
 - 本工具全流程 **唯讀 (Read-only)**，禁止任何設定變更
 - `inventory.csv` 含敏感帳密，**切勿上傳至版本控制**
+- `START.md` 含客戶路徑，已加入 `.gitignore`，**切勿手動 `git add`**
 - 產出的 `raw_backups/` 與 `dr_configs/` 含設備完整設定，請妥善保管
+
+---
 
 ## 📦 相依套件與核心技術 (Dependencies)
 
