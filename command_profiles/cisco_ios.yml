@@ -35,6 +35,8 @@ commands:
   - "show ip route"
   - "show ip arp"
   - "show mac address-table"
+  - "show interfaces status err-disabled"
+  - "show errdisable recovery"
   - "show cdp neighbors detail"
   - "show lldp neighbors detail"
   - "show logging"

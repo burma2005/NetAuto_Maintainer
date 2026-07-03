@@ -38,6 +38,8 @@ commands:
   - "show ip route"
   - "show ip arp"
   - "show mac address-table"
+  - "show interface status err-disabled"
+  - "show errdisable recovery"
   - "show vpc"
   - "show vpc brief"
   - "show vpc peer-keepalive"
