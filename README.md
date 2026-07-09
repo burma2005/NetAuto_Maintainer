@@ -47,9 +47,29 @@
 | 階段 | 腳本 / 動作 | 產出 |
 |------|------------|------|
 | 1. 線上採集 | `collect_show_commands.py` | `raw_backups/`（各設備完整 show 輸出）|
-| 2. 離線分析 | `process_offline_data.py` | DR 備份、拓樸圖、Syslog 分析、Err-Disabled 彙整、AP 位置表 |
-| 3. CVE 比對 | AI 即時網頁搜尋 | 各設備 OS 版本對應最新漏洞（不依賴靜態資料庫）|
-| 4. 報告交付 | Append 至 Markdown | `maintenance_report.md`（含 CVE 的完整版）|
+| 2. 離線分析 | `process_offline_data.py` | DR 備份、拓樸圖、Syslog 分析、Err-Disabled 彙整、AP 位置表 → `maintenance_report.md`（**分析底稿**）|
+| 3. CVE 比對 | AI 即時網頁搜尋 | 各設備 OS 版本對應最新漏洞（不依賴靜態資料庫），回寫 `.md` |
+| 4. CVE 回寫 | Append 至 Markdown | `maintenance_report.md`（完整分析底稿 / 下季比對錨點）|
+| 5. 報告交付 | AI 套固定版型：MD → HTML → PDF | `maintenance_report.html` + **`maintenance_report.pdf`（最終交付物，A4 可列印）**|
+
+> **`.md` vs `.html`/`.pdf` 分工**：`.md` 是給 AI 低成本閱讀、跨季 `diff` 比對的**分析底稿**；`.html`/`.pdf` 才是交給客戶的**交付物**。HTML 採「骨架固定、內容自由」——樣式與章節標題沿用黃金版型（[`examples/sample_edge_maintenance_report.html`](examples/sample_edge_maintenance_report.html)），內建 A4 分頁列印樣式，瀏覽器直接 `Ctrl+P` 即輸出正確 A4 版面的 PDF。
+
+---
+
+## 🖱️ 人力採集模式（設備清單已確定時，省 token）
+
+當設備清單已完整確定（**型號、IP、帳密齊全，先前已跑過採集**），不必再讓 AI Agent 逐步引導線上採集。改用 GUI 一鍵完成 RAW DATA 採集，之後才把資料交給 AI Agent **只做報告分析**，避免浪費 token 在採集階段。
+
+**操作方式：**
+
+1. 雙擊專案根目錄的 **`人力採集RAW_DATA.bat`**
+2. 跳出視窗 → 選擇你的設備清單 `inventory.csv`
+3. 再跳出視窗 → 選擇 RAW DATA 輸出資料夾（取消則預設為清單同層 `output/`）
+4. 腳本自動並行 SSH 唯讀採集，完成後開啟輸出資料夾，並印出可直接複製給 AI 的**交接提示**
+5. 把交接提示貼給 AI Agent，AI 從**階段 2 離線分析**接手，跳過線上採集
+
+> 底層仍呼叫 `scripts/collect_show_commands.py`，全程唯讀。GUI 啟動器為 [`scripts/collect_gui.py`](scripts/collect_gui.py)。
+> 與「AI Agent 模式」互補：清單已定 → 走人力採集；首次盤點或設備會變動 → 走 AI 引導採集。
 
 ---
 
@@ -81,6 +101,7 @@ NetAuto_Maintainer/
 ├── README.md                       ← 本文件
 ├── requirements.txt                ← Python 相依套件
 ├── inventory_template.csv          ← 設備清單範本 (可留空廠牌以自動嗅探)
+├── 人力採集RAW_DATA.bat            ← 雙擊啟動人力採集 GUI（清單已定時省 token）
 ├── command_profiles/               ← 設備指令集 Profile (YAML)
 │   ├── cisco_ios.yml
 │   ├── cisco_nxos.yml
@@ -90,6 +111,7 @@ NetAuto_Maintainer/
 │   └── README.md
 ├── scripts/
 │   ├── collect_show_commands.py    ← SSH 自動嗅探與並行採集
+│   ├── collect_gui.py              ← 人力採集 GUI（選清單/輸出 → 呼叫採集腳本）
 │   └── process_offline_data.py     ← 離線分析、拓樸產出、Err-Disabled 偵測、AP 位置反查
 └── examples/                       ← 去識別化的範例產出
     ├── sample_maintenance_report.md           ← Markdown 格式範例
