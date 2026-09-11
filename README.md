@@ -115,6 +115,20 @@ python scripts/build_interface_report.py -j output_interface_check/interface_ana
 
 ---
 
+## 🧩 單一 Port 多 MAC 清查（找末端串接 HUB，獨立工具）
+
+離線解析定保 `raw_backups`（不需重新連線），列出 **access port 上扣除話機 MAC 後，仍有 ≥ N 個不重複 MAC** 的 port，用於清查末端交換器下是否再串小 HUB / 小交換器。
+
+```bash
+python scripts/analyze_mac_per_port.py -r output/raw_backups -o output_mac_check --customer "客戶名稱" [--min-macs 2] --pdf
+```
+
+- **話機 MAC 扣除**：該 port `switchport voice vlan` 內之 MAC、CDP Device ID 為 `SEP<MAC>`、LLDP 宣告為電話（T）之 chassis MAC。
+- **排除**：trunk、Port-channel、CDP/LLDP 對端為交換器 / AP / 路由器之 port（上行鏈路本就多 MAC）。
+- **輔助判讀**：MAC 旁附 ARP 對應 IP；VirtualBox / Hyper-V / VMware / KVM 等虛擬化 MAC 前綴會標註「含 VM」，多為單機虛擬機而非 HUB。
+
+---
+
 ## 📂 目錄結構
 
 ```text
@@ -138,7 +152,8 @@ NetAuto_Maintainer/
 │   ├── process_offline_data.py     ← 離線分析、拓樸產出、Err-Disabled 偵測、AP 位置反查
 │   ├── collect_show_interfaces.py  ← 介面檢查：唯讀採集 show interfaces / counters errors
 │   ├── analyze_interfaces.py       ← 介面檢查：解析錯誤計數 + 歷史 Link Flapping
-│   └── build_interface_report.py   ← 介面檢查：產出實體線路異常快速檢視（HTML/MD/PDF）
+│   ├── build_interface_report.py   ← 介面檢查：產出實體線路異常快速檢視（HTML/MD/PDF）
+│   └── analyze_mac_per_port.py     ← 單一 port 多 MAC 清查（找末端串接 HUB）
 └── examples/                       ← 去識別化的範例產出
     ├── sample_maintenance_report.md           ← Markdown 格式範例
     ├── sample_edge_maintenance_report.html    ← A4 HTML 格式範例（含封面、拓樸圖、AP 位置表）
