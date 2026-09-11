@@ -92,6 +92,29 @@ python scripts/process_offline_data.py -r output/raw_backups -o output
 
 ---
 
+## 🔌 介面實體線路異常快速檢視（獨立工具）
+
+找出「哪些 port 有 CRC / FCS / Align / Collision / Late Collision 錯誤」，並比對歷史定保 raw 的 Link Flapping 紀錄，產出依設備分組、依 port 排序的一張清單，供現場查線使用。全程唯讀。
+
+```bash
+# 1. 唯讀採集（cisco_ios：show version / show interfaces / show interfaces counters errors）
+python scripts/collect_show_interfaces.py -i inventory.csv -o output_interface_check
+
+# 2. 解析本次計數 + 遞迴掃描歷史定保 raw（*_raw.txt）找 Link Flapping
+python scripts/analyze_interfaces.py -c output_interface_check/raw_interfaces \
+    -H <歷史定保根目錄> -o output_interface_check/interface_analysis.json [--threshold 3]
+
+# 3. 產出快速檢視報告（HTML / MD，--pdf 另存 PDF）
+python scripts/build_interface_report.py -j output_interface_check/interface_analysis.json \
+    -o output_interface_check --customer "客戶名稱" --pdf
+```
+
+- **Link Flap 判定**：曾因 link-flap 被 err-disable，或單份 log 內同一介面 `%LINK-3-UPDOWN … down` ≥ threshold 次（跨次採集同一事件去重）。
+- **注意**：錯誤計數為設備開機以來累計（除非曾 `clear counters`），報告僅列出位置與數量，排除後建議清除計數器、下次比對增量。
+- 歷史批次標籤取自 raw 所在之批次資料夾名稱（自動去除共同前綴/後綴）。
+
+---
+
 ## 📂 目錄結構
 
 ```text
@@ -112,7 +135,10 @@ NetAuto_Maintainer/
 ├── scripts/
 │   ├── collect_show_commands.py    ← SSH 自動嗅探與並行採集
 │   ├── collect_gui.py              ← 人力採集 GUI（選清單/輸出 → 呼叫採集腳本）
-│   └── process_offline_data.py     ← 離線分析、拓樸產出、Err-Disabled 偵測、AP 位置反查
+│   ├── process_offline_data.py     ← 離線分析、拓樸產出、Err-Disabled 偵測、AP 位置反查
+│   ├── collect_show_interfaces.py  ← 介面檢查：唯讀採集 show interfaces / counters errors
+│   ├── analyze_interfaces.py       ← 介面檢查：解析錯誤計數 + 歷史 Link Flapping
+│   └── build_interface_report.py   ← 介面檢查：產出實體線路異常快速檢視（HTML/MD/PDF）
 └── examples/                       ← 去識別化的範例產出
     ├── sample_maintenance_report.md           ← Markdown 格式範例
     ├── sample_edge_maintenance_report.html    ← A4 HTML 格式範例（含封面、拓樸圖、AP 位置表）
